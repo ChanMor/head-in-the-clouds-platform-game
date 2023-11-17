@@ -25,5 +25,9 @@ public class Main extends Application {
 		launch(args);
 		System.out.println("Hello world!");
 		System.out.println("Hi axel :>!");
+		System.out.println("pepe");
+		for (int i = 0; i<5; i++) {
+			System.out.println("hotdog");
+		}
 	}
 }
