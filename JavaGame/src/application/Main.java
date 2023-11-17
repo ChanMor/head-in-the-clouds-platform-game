@@ -30,8 +30,20 @@ public class Main extends Application {
 			System.out.println("hotdog");
 			System.out.println("ni franz");
 		}
+<<<<<<< HEAD
 		//NEW LAGAY
 		//hi i am here
 		//pepe mabango masarap
+=======
+	
+		//NEW LAGAY
+		//hi i am here
+		//pepe mabango masarap
+<<<<<<< HEAD
+		//hihihhih
+=======
+		//HATDOG
+>>>>>>> origin/main
+>>>>>>> origin/main
 	}
 }
