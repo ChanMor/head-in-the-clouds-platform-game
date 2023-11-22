@@ -12,6 +12,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.image.ImageView;
 
 public class GameStage 
 {
@@ -65,28 +67,44 @@ public class GameStage
 		this.stage.setScene(this.tutorialScene);
 	}
 	
-	private void initMain()
-	{
-	    Image bg = new Image("file:src/images/bg_main.png");
+	private void initMain() {
+	    Image bg = new Image("file:src/images/bg_main.jpg");
+
+	    StackPane root = new StackPane(); // Use StackPane instead of BorderPane
+
+	    // Use ImageView to stretch the background image
+	    ImageView imageView = new ImageView(bg);
+	    imageView.setFitWidth(GAME_WIDTH);
+	    imageView.setFitHeight(GAME_HEIGHT);
 	    
-	    StackPane root = new StackPane();
-	    root.getChildren().addAll(this.createCanvas(bg));
+	    // Create buttons
+	    ImageView aboutImageView = createImageView("file:src/images/about_button.png");
+	    aboutImageView.setOnMouseClicked(event -> sendToAbout());
+
+	    ImageView tutorialImageView = createImageView("file:src/images/tutorial_button.png");
+	    tutorialImageView.setOnMouseClicked(event -> sendToTutorial());
+
+	    // Add background image and buttons to StackPane
+	    root.getChildren().addAll(imageView, aboutImageView, tutorialImageView);
+
+	    // Manually adjust the position of buttons
+	    aboutImageView.setTranslateX(-50); // Adjust as needed
+	    tutorialImageView.setTranslateX(50); // Adjust as needed
 	    
-	    Button b1 = new Button("About");
-	    b1.setOnMouseClicked(event -> sendToAbout());
-	    
-	    Button b2 = new Button("Tutorial");
-	    b2.setOnMouseClicked(event -> sendToTutorial());
-	    
-	    HBox hbox = new HBox();
-	    hbox.getChildren().addAll(b1, b2);
-	    hbox.setSpacing(10); // set the spacing between buttons
-	    hbox.setAlignment(Pos.BOTTOM_CENTER); // align the buttons to the bottom center
-	    
-	    root.getChildren().add(hbox);
-	    
-	    this.mainScene = new Scene(root); 
-	}
+	    // Center the buttons in the StackPane
+	    StackPane.setAlignment(aboutImageView, Pos.CENTER_LEFT);
+	    StackPane.setAlignment(tutorialImageView, Pos.CENTER_RIGHT);
+
+	    this.mainScene = new Scene(root);
+    }
+
+    private ImageView createImageView(String imageUrl) {
+        Image image = new Image(imageUrl);
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(100); // Adjust the size as needed
+        imageView.setPreserveRatio(true);
+        return imageView;
+    }
 	
 	private void initAbout()
 	{
