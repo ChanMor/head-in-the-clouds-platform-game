@@ -18,23 +18,9 @@ public class Main extends Application {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		System.out.print("Hi Franz!");
 	}
 	
 	public static void main(String[] args) {
 		launch(args);
-		System.out.println("Hello world!");
-		System.out.println("Hi axel :>!");
-		System.out.println("pepe");
-		for (int i = 0; i<5; i++) {
-			System.out.println("hotdog");
-			System.out.println("ni franz");
-		}
-
-		//NEW LAGAY
-		//hi i am here
-		//pepe mabango masarap
-
-		//HIIIIIIIII
 	}
 }
