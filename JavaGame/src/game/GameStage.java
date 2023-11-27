@@ -1,11 +1,21 @@
 package game;
 
+import java.io.File;
+
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Scale;
+import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.effect.DropShadow;
@@ -60,36 +70,48 @@ public class GameStage
 	
 	private void initMain() 
 	{
-	   Image bg = new Image("file:src/images/bg_main.jpg");
-
 	    StackPane root = new StackPane();
-
-	    // Use ImageView to stretch the background image
-	    ImageView imageView = new ImageView(bg);
-	    imageView.setFitWidth(GAME_WIDTH);
-	    imageView.setFitHeight(GAME_HEIGHT);
-
+		
+	    Media vid = new Media(new File("src/images/bg.mp4").toURI().toString());
+	    
+		MediaPlayer bgvid = new MediaPlayer(vid);
+		bgvid.setAutoPlay(true);
+		bgvid.setCycleCount(MediaPlayer.INDEFINITE);
+		
+		MediaView bg = new MediaView(bgvid);
+	
+		bg.setFitHeight(GAME_HEIGHT);
+		bg.setFitWidth(GAME_WIDTH);
+		
+		bg.setPreserveRatio(true);
+		
+	    double scaleValue = 2.7;
+	    Scale scale = new Scale(scaleValue, scaleValue);
+	    
+	    scale.setPivotX(GAME_WIDTH / 2.0 - 1);
+	    scale.setPivotY(GAME_HEIGHT / 2.0 - 225);
+	    
+	    bg.getTransforms().add(scale);
+		
 	    // Create buttons
-	    ImageView playImageView = createImageView("file:src/images/play_button.png", 280, 80);
+	    ImageView playImageView = createImageView("file:src/images/btn_play.png", 310, 80);
 	    playImageView.setOnMouseClicked(event -> sendToPlay());
 
-	    ImageView aboutImageView = createImageView("file:src/images/about_button.png", 130, 60);
+	    ImageView aboutImageView = createImageView("file:src/images/btn_about.png", 150, 65);
 	    aboutImageView.setOnMouseClicked(event -> sendToAbout());
 
-	    ImageView tutorialImageView = createImageView("file:src/images/btn_tutorial.png", 130, 60);
+	    ImageView tutorialImageView = createImageView("file:src/images/btn_tutorial.png", 150, 65);
 	    tutorialImageView.setOnMouseClicked(event -> sendToTutorial());
-	    tutorialImageView.setFitWidth(130); // Set the tutorial button width
-	    tutorialImageView.setFitHeight(60); // Set the tutorial button height
 
 	    // Create an HBox for "About" and "Tutorial" buttons
-	    HBox aboutTutorialHBox = createHBox(-10, aboutImageView, tutorialImageView, Pos.CENTER);
+	    HBox aboutTutorialHBox = createHBox(10, aboutImageView, tutorialImageView, Pos.CENTER);
 
 	    // Create a VBox to organize buttons
-	    VBox buttonVBox = createVBox(-5, playImageView, aboutTutorialHBox, Pos.CENTER); // Set vertical spacing between buttons
-	    buttonVBox.setTranslateY(140);
+	    VBox buttonVBox = createVBox(10, playImageView, aboutTutorialHBox, Pos.CENTER); // Set vertical spacing between buttons
+	    buttonVBox.setTranslateY(190);
 	    
 	    // Add background image and buttons to StackPane
-	    root.getChildren().addAll(imageView, buttonVBox);
+	    root.getChildren().addAll(bg, buttonVBox);
 
 	    
 	    this.mainScene = new Scene(root);
