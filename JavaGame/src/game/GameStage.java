@@ -39,7 +39,7 @@ public class GameStage
 		this.stage = stage;
 		this.stage.setTitle("Head in the Clouds");
 		this.stage.setResizable(false);
-		
+		stage.getIcons().add(new Image("file:src/images/icon.PNG"));
 		sendToMain();
 		this.stage.show();
 	}
@@ -72,7 +72,7 @@ public class GameStage
 	{
 	    StackPane root = new StackPane();
 		
-	    Media vid = new Media(new File("src/images/bg.mp4").toURI().toString());
+	    Media vid = new Media(new File("src/images/bg_main.mp4").toURI().toString());
 	    
 		MediaPlayer bgvid = new MediaPlayer(vid);
 		bgvid.setAutoPlay(true);
