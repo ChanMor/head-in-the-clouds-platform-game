@@ -2,9 +2,7 @@ package game;
 
 import java.io.File;
 
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
@@ -13,9 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.effect.DropShadow;
@@ -33,6 +29,8 @@ public class GameStage
 	private Scene tutorialScene;
 	private Scene aboutScene;
 	private Scene playScene;
+	private MediaPlayer bgvideoPlayer;
+	private MediaView bg_vid;
 	
 	public void setStage(Stage stage)
 	{
@@ -40,67 +38,69 @@ public class GameStage
 		this.stage.setTitle("Head in the Clouds");
 		this.stage.setResizable(false);
 		stage.getIcons().add(new Image("file:src/images/icon.PNG"));
+		
+		this.initMain();
+		this.initAbout();
+		this.initTutorial();
 		sendToMain();
 		this.stage.show();
 	}
 	
 	private void sendToMain()
-	{
-		this.initMain();
+	{	
+		bgvideoPlayer.setMute(false);
 		this.stage.setScene(this.mainScene);
 	}
 	
 	private void sendToPlay()
 	{
+		bgvideoPlayer.setMute(true);
 		this.initPlay();
 		this.stage.setScene(this.playScene);
 	}
 	
 	private void sendToAbout()
 	{
-		this.initAbout();
+		bgvideoPlayer.setMute(true);
 		this.stage.setScene(this.aboutScene);
 	}
 	
 	private void sendToTutorial()
 	{
-		this.initTutorial();
+		bgvideoPlayer.setMute(true);
 		this.stage.setScene(this.tutorialScene);
+	}
+	
+	private void setBackground(String url)
+	{
+		Media videoFile = new Media(new File(url).toURI().toString());
+	    
+		bgvideoPlayer = new MediaPlayer(videoFile);
+		bgvideoPlayer.setAutoPlay(true);
+		bgvideoPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+		
+		this.bg_vid = new MediaView(bgvideoPlayer);
+	
+		bg_vid.setFitHeight(GAME_HEIGHT);
+		bg_vid.setFitWidth(GAME_WIDTH);
+		
+		bg_vid.setPreserveRatio(true);
 	}
 	
 	private void initMain() 
 	{
 	    StackPane root = new StackPane();
 		
-	    Media vid = new Media(new File("src/images/bg_main.mp4").toURI().toString());
-	    
-		MediaPlayer bgvid = new MediaPlayer(vid);
-		bgvid.setAutoPlay(true);
-		bgvid.setCycleCount(MediaPlayer.INDEFINITE);
-		
-		MediaView bg = new MediaView(bgvid);
-	
-		bg.setFitHeight(GAME_HEIGHT);
-		bg.setFitWidth(GAME_WIDTH);
-		
-		bg.setPreserveRatio(true);
-		
-	    double scaleValue = 2.7;
-	    Scale scale = new Scale(scaleValue, scaleValue);
-	    
-	    scale.setPivotX(GAME_WIDTH / 2.0 - 1);
-	    scale.setPivotY(GAME_HEIGHT / 2.0 - 225);
-	    
-	    bg.getTransforms().add(scale);
+	    setBackground("src/images/bg_main.mp4");
 		
 	    // Create buttons
-	    ImageView playImageView = createImageView("file:src/images/btn_play.png", 310, 80);
+	    ImageView playImageView = createImageView("file:src/images/btn_play.png", 350, 80);
 	    playImageView.setOnMouseClicked(event -> sendToPlay());
 
-	    ImageView aboutImageView = createImageView("file:src/images/btn_about.png", 150, 65);
+	    ImageView aboutImageView = createImageView("file:src/images/btn_about.png", 170, 65);
 	    aboutImageView.setOnMouseClicked(event -> sendToAbout());
 
-	    ImageView tutorialImageView = createImageView("file:src/images/btn_tutorial.png", 150, 65);
+	    ImageView tutorialImageView = createImageView("file:src/images/btn_tutorial.png", 170, 65);
 	    tutorialImageView.setOnMouseClicked(event -> sendToTutorial());
 
 	    // Create an HBox for "About" and "Tutorial" buttons
@@ -108,11 +108,10 @@ public class GameStage
 
 	    // Create a VBox to organize buttons
 	    VBox buttonVBox = createVBox(10, playImageView, aboutTutorialHBox, Pos.CENTER); // Set vertical spacing between buttons
-	    buttonVBox.setTranslateY(190);
+	    buttonVBox.setTranslateY(180);
 	    
 	    // Add background image and buttons to StackPane
-	    root.getChildren().addAll(bg, buttonVBox);
-
+	    root.getChildren().addAll(this.bg_vid, buttonVBox);
 	    
 	    this.mainScene = new Scene(root);
     }
@@ -140,6 +139,13 @@ public class GameStage
 	}
 	
 	private VBox createVBox(int spacing, ImageView btn1, HBox btn2, Pos alignment) {
+		VBox newHBox = new VBox(spacing);
+		newHBox.getChildren().addAll(btn1, btn2);
+		newHBox.setAlignment(alignment);
+		return newHBox;
+	}
+	
+	private VBox createVBox(int spacing, ImageView btn1, VBox btn2, Pos alignment) {
 		VBox newHBox = new VBox(spacing);
 		newHBox.getChildren().addAll(btn1, btn2);
 		newHBox.setAlignment(alignment);
