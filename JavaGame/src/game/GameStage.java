@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -91,7 +92,13 @@ public class GameStage
 	{
 	    StackPane root = new StackPane();
 		
-	    setBackground("src/images/bg_main.mp4");
+	    setBackground("src/media/bg_main.mp4");
+	    
+	    AudioClip bgm = new AudioClip("file:src/media/audio_bgmdraft.mp3");
+	    bgm.setVolume(0.50);
+	    bgm.setCycleCount(AudioClip.INDEFINITE);
+	    bgm.play();
+	    
 		
 	    // Create buttons
 	    ImageView playImageView = createImageView("file:src/images/btn_play.png", 350, 80);
