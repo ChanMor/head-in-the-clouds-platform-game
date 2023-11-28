@@ -95,7 +95,7 @@ public class GameStage
 	    setBackground("src/media/bg_main.mp4");
 	    
 	    AudioClip bgm = new AudioClip("file:src/media/audio_bgmdraft.mp3");
-	    bgm.setVolume(0.50);
+	    bgm.setVolume(0.65);
 	    bgm.setCycleCount(AudioClip.INDEFINITE);
 	    bgm.play();
 	    
