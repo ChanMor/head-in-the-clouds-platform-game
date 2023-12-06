@@ -23,29 +23,27 @@ public class Character {
     private double velocityY = 0;
     private double velocityX = 0;
 
-    private int gameWidth;
-    private int gameHeight;
+
 
     private double groundLevel;
     private boolean continuousJumping = false;
 
-    public Character(double initialX, double initialY, int width, int height, Canvas canvas, Scene scene) {
+    public Character(double initialX, double initialY, Canvas canvas, Scene scene) {
         this.characterX = initialX;
         this.characterY = initialY;
         this.canvas = canvas;
         this.playScene = scene;
 
-        this.gameWidth = width;
-        this.gameHeight = height;
-        this.groundLevel = this.gameHeight - 80;
-        initialize(width, height);
+
+        this.groundLevel = canvas.getHeight() - 80;
+        initialize();
     }
 
-    private void initialize(int width, int height) {
+    private void initialize() {
         this.gc = this.canvas.getGraphicsContext2D();
 
-        characterX = width / 2 - 40;
-        characterY = height;
+        characterX = canvas.getWidth() / 2 - 40;
+        characterY = canvas.getHeight();
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(16), e -> updateCharacter()));
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -72,17 +70,22 @@ public class Character {
         });
     }
 
-    private void moveCharacterLeft() {
+    
+    double getCharacterY() {
+    	return characterY;
+    }
+    
+    void moveCharacterLeft() {
         velocityX = -5;
     }
 
-    private void moveCharacterRight() {
+    void moveCharacterRight() {
         velocityX = 5;
     }
 
     private void jump() {
         if (characterY == groundLevel) {
-            velocityY = -15;
+            velocityY = -14;
         }
 
         if (characterY > groundLevel) {
@@ -109,8 +112,8 @@ public class Character {
         if (characterX < 0) {
             characterX = 0;
             velocityX = 0;
-        } else if (characterX > gameWidth - 80) {
-            characterX = gameWidth - 80;
+        } else if (characterX > canvas.getWidth() - 80) {
+            characterX = canvas.getWidth() - 80;
             velocityX = 0;
         }
 
@@ -124,7 +127,7 @@ public class Character {
     }
 
     private void drawCharacter() {
-        this.gc.clearRect(0, 0, gameWidth, gameHeight);
+        this.gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         Image characterImage = new Image("file:src/images/character.png", 80, 80, true, true);
         this.gc.drawImage(characterImage, characterX, characterY);
     }
