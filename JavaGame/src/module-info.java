@@ -1,4 +1,5 @@
-module FinalProject {
+module PlayerMovementLogic {
+
 	requires javafx.controls;
 	requires javafx.graphics;
 	requires javafx.media;
@@ -7,4 +8,5 @@ module FinalProject {
 	opens application to javafx.graphics, javafx.media, javafx.fxml;
 	opens game to javafx.graphics, javafx.media, javafx.fxml;
 	opens main to javafx.graphics, javafx.media, javafx.fxml;
+
 }
