@@ -4,6 +4,8 @@ import java.io.File;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -32,6 +34,9 @@ public class GameStage
 	private Scene playScene;
 	private MediaPlayer bgvideoPlayer;
 	private MediaView bg_vid;
+	
+	private Canvas canvas;
+	private Scene scene;
 	
 	public void setStage(Stage stage)
 	{
@@ -161,25 +166,10 @@ public class GameStage
 
 	private void initPlay()
 	{
-	    Image bg = new Image("file:src/images/bg_play.jpg");
-
-	    StackPane root = new StackPane();
-	    ImageView imageView = new ImageView(bg);
-	    imageView.setFitWidth(GAME_WIDTH);
-	    imageView.setFitHeight(GAME_HEIGHT);
-
-	    this.playScene = new Scene(root);
-	    
-	    ImageView backImageView = createImageView("file:src/images/btn_back.png", 130, 60);
-	    backImageView.setOnMouseClicked(event -> sendToMain());
-
-	    // Create a VBox to center the buttons vertically
-	    VBox buttonVBox = new VBox();
-	    buttonVBox.setAlignment(Pos.CENTER);
-	    buttonVBox.getChildren().addAll(backImageView);
-	    
-	    // Add background image and buttons to StackPane
-	    root.getChildren().addAll(imageView, buttonVBox);
+		GraphicsContext gc = this.canvas.getGraphicsContext2D();
+	    GameTimer gameTimer = new GameTimer(gc, scene);
+	    gameTimer.start();
+	    this.playScene = scene;
 	}
     
 	private void initAbout()
